@@ -15,7 +15,10 @@ search
 score
 
 TODO
+search
+https://github.com/visionmedia/google-search
+- kick off requests with question and answer
+score
 emulator
 screenshot keypress binding
 ocr, need crop
-search

@@ -61,24 +61,28 @@ def test_stubbed_results
     answers: ["Calculator", "Walkie-talkie", "Transistor radio"]
   }
 
-  results = answers_and_question[:answers].map do |answer|
-    result = nil
-    File.open("search-#{answer}.txt","rb") { |f| result = Marshal.load(f) }
-    result
+  cached_results = answers_and_question[:answers].map do |answer|
+    cached_result = nil
+    File.open("search-#{answer}.txt","rb") { |f| cached_result = Marshal.load(f) }
+    cached_result
   end
 
-  scores = []
+  results = []
   answers_and_question[:answers].each_with_index do |answer, i|
-    scores << search_for(answers_and_question[:question], answer, results[i])
+    results << search_for(answers_and_question[:question], answer, cached_results[i])
   end
 
-  expected_scores = [
-    {:answer=>"Calculator", :result=>"38800"}, # Note this is the wrong answer, need to fix score
-    {:answer=>"Walkie-talkie", :result=>"120"},
-    {:answer=>"Transistor radio", :result=>"1030"}
+  expected_results = [
+    {:answer=>"Calculator", :count=>"38800"},
+    {:answer=>"Walkie-talkie", :count=>"120"},
+    {:answer=>"Transistor radio", :count=>"1030"}
   ]
-  test_output(scores, expected_scores)
+
+  results = results.map { |result| result.delete(:items); result }
+  expected_results = expected_results.map { |result| result.delete(:items); result }
+
+  test_output(results, expected_results)
 end
 
-run_ocr_and_parse_tests
+# run_ocr_and_parse_tests
 test_stubbed_results

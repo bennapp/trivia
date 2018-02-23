@@ -9,12 +9,13 @@ def search_for(question, answer, stubbed_result = nil)
   if stubbed_result
     result = stubbed_result
   else
-    result = GoogleCustomSearchApi.search("#{question} #{answer}")
+    result = GoogleCustomSearchApi.search(query(question, answer))
   end
 
   {
     answer: answer,
-    result: score(result)
+    count: score(result),
+    items: result['items'].first(3).map { |item| "#{item['htmlTitle']} \n\n #{item['htmlSnippet']}" }
   }
 end
 
@@ -28,4 +29,11 @@ end
 # Not a very good score
 def score(result)
   result['searchInformation']['totalResults']
+end
+
+# http://www.googleguide.com/interpreting_queries.html
+# Google gives more priority to pages that have search terms in the same order as the query.
+# http://musingsaboutlibrarianship.blogspot.com/2015/10/6-common-misconceptions-when-doing.html
+def query(question, answer)
+  "(#{answer}) AROUND(9) (#{question})"
 end

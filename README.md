@@ -28,9 +28,3 @@ screenshot keypress binding
 ocr / parse
 search
 score
-
-TODO
-score
-emulator
-screenshot keypress binding
-ocr, need crop

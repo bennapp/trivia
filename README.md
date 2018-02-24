@@ -5,6 +5,8 @@ unix
 brew update
 brew install imagemagick
 brew install tesseract
+npm install
+npm start
 ````
 
 Google search setup:
@@ -28,9 +30,6 @@ search
 score
 
 TODO
-search
-https://github.com/visionmedia/google-search
-- kick off requests with question and answer
 score
 emulator
 screenshot keypress binding

@@ -14,8 +14,8 @@ def search_for(question, answer, stubbed_result = nil)
 
   {
     answer: answer,
-    count: score(result),
-    items: result['items'].first(3).map { |item| "#{item['htmlTitle']} \n\n #{item['htmlSnippet']}" }
+    count: count(result),
+    items: result['items'].first(3).map { |item| { title: item['htmlTitle'], text: item['htmlSnippet'].strip.gsub(/\<br\>/, '') } }
   }
 end
 
@@ -27,7 +27,7 @@ def search_and_parse_response(question_and_answers)
 end
 
 # Not a very good score
-def score(result)
+def count(result)
   result['searchInformation']['totalResults']
 end
 

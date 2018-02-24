@@ -2,6 +2,7 @@
 require './parser.rb'
 require './ocr.rb'
 require './search.rb'
+require './json_writer.rb'
 
 def test_output(actual, expectation)
   result = actual == expectation
@@ -55,7 +56,7 @@ def serialize_search_result
   end
 end
 
-def test_stubbed_results
+def test_stubbed_search_results
   answers_and_question = {
     question: "In 1954, Texas Instruments helped create the ﬁrst commercial version of what?",
     answers: ["Calculator", "Walkie-talkie", "Transistor radio"]
@@ -78,11 +79,20 @@ def test_stubbed_results
     {:answer=>"Transistor radio", :count=>"1030"}
   ]
 
-  results = results.map { |result| result.delete(:items); result }
-  expected_results = expected_results.map { |result| result.delete(:items); result }
+  results_without_items = results.map { |result| { answer: result[:answer], count: result[:count] } }
 
-  test_output(results, expected_results)
+  test_output(results_without_items, expected_results)
+  results
 end
 
+
+###TESTS
+
+# OCR and PARSE
 # run_ocr_and_parse_tests
-test_stubbed_results
+
+# SEARCH w/ stubbed results
+results_with_items = test_stubbed_search_results
+
+# JSON WRITER
+write_results_as_json(results_with_items)

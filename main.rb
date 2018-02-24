@@ -3,6 +3,7 @@ require './parser.rb'
 require './ocr.rb'
 require './search.rb'
 require './json_writer.rb'
+require 'shellwords'
 
 def run(file_name)
   raw_text = ocr(file_name)
@@ -18,7 +19,7 @@ loop do
 
   if files != initial_files
     new_file = files.split("\n").last
-    run(new_file)
+    run(Shellwords.shellescape(new_file))
   end
 end
 
